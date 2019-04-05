@@ -97,6 +97,11 @@ NOTE THAT THE SMALLER LISTS ARE SORTED. THE ORDERING OF THE LISTS IN THE BIG LIS
 
 -- QUESTION 4: Primes
 
+factor 1 = []
+factor n = let divisors = dropWhile ((/= 0) . mod n) [2 .. ceiling $ sqrt $ fromIntegral n]
+           in let prime = if null divisors then n else head divisors
+              in (prime :) $ factor $ div n prime
+
 nextPrimes :: Int -> [Int]
 nextPrimes n
     | n <= 99 = error "You've not tried to write nextPrimes for 2 digit numbers"
@@ -106,12 +111,7 @@ nextPrimes n
     | otherwise = error "You've not tried to write nextPrimes for big numbers yet"
 
 primeFactorisation :: Int -> [Int]
-primeFactorisation n
-    | n <= 99 = error "You've not tried to write primeFactorisation for 2 digit numbers"
-    | n <= 9999 = error "You've not tried to write primeFactorisation for 4 digit numbers"
-    | n <= 99999 = error "You've not tried to write primeFactorisation for 5 digit numbers"
-    | n <= 999999 = error "You've not tried to write primeFactorisation for 6 digit numbers"
-    | otherwise = error "You've not tried to write primeFactorisation for big numbers yet"
+primeFactorisation n = factor n
 
 {- 
 Leave the error messages in place if you do not want to attempt the parts for the input size. You should remove the guards up to the point you want to attempt. For example, if you were confident of anything up to five digits, the function would look like:
