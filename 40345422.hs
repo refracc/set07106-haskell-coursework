@@ -21,7 +21,7 @@ subset (x:xs) ys
 
 count :: (Eq a) => a -> [a] -> Int
 count x [] = 0
-count x ys = length(filter(==x)ys)
+count x ys = length (filter(==x)ys)
 
 flipPair :: (Eq a) => (a,a) -> (a,a)
 flipPair (x,y) = (y,x)
@@ -33,6 +33,23 @@ addAtEnd x (y:ys) = y:addAtEnd x ys
 append :: [a] -> [a] -> [a]
 append [] ys = ys
 append (x:xs) ys = append xs : addAtEnd x ys
+
+divides :: Int -> Int -> Bool
+divides x y = rem x y == 0
+
+isComposite :: Int -> Bool
+isComposite n = foldl (||) False (map (divides n) [2..(n-1)])
+
+isCoPrime :: Int -> Int -> Bool
+isCoPrime x y
+    | gcd x y == 1 = True
+    | otherwise = False
+
+isPrime :: Int -> Bool
+isPrime n
+    | n <= 0 = error "Are you high? That's never going to work!"
+    | otherwise = not (isComposite n)
+
 -- QUESTION 1: Sets
 
 complement :: (Eq a) => [a] -> [a] -> Maybe [a]
@@ -141,10 +158,14 @@ primeFactorisation 64 = [2,2,2,2,2,2]
 -- QUESTION 5: RSA
 
 eTotient :: Int -> Int
-eTotient n = error "You've not tried to write eTotient yet"
+eTotient n
+    | isPrime n = n-1
+    | otherwise = length (filter (isCoPrime n) [0..n])
 
 encode :: Int -> Int -> Int -> Int -> Maybe Int
-encode p q m e = error "You've not tried to write encode yet"
+encode p q m e 
+    | (isPrime p) && (isPrime q) && (isCoPrime e (eTotient (p*q))) && (1<e) && (e<eTotient(p*q)) = Just ((m^e) `mod` (p*q))
+    | otherwise = Nothing
 
 -- TEST SET FOR Q5
 {-
