@@ -128,7 +128,9 @@ nextPrimes n
     | otherwise = error "You've not tried to write nextPrimes for big numbers yet"
 
 primeFactorisation :: Int -> [Int]
-primeFactorisation n = factor n
+primeFactorisation n 
+    | n <= 0 = error "You can't do that!"
+    | otherwise = factor n
 
 {- 
 Leave the error messages in place if you do not want to attempt the parts for the input size. You should remove the guards up to the point you want to attempt. For example, if you were confident of anything up to five digits, the function would look like:
